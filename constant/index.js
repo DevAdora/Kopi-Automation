@@ -14,7 +14,7 @@ export const categories = [
         name: "Snacks",
         image: require('../assets/images/snacks.png')
     },
-]
+];
 
 export const menus = [
     // {
@@ -27,35 +27,41 @@ export const menus = [
     {
         id: 1,
         name: "Americano",
-        image: require('../assets/images/Beverages/americano.png')
+        image: require('../assets/images/Beverages/americano.png'),
+        price: 90.00
     },
     {
         id: 2,
         name: "Cappuccino",
-        image: require('../assets/images/Beverages/cappuccino.png')
+        image: require('../assets/images/Beverages/cappuccino.png'),
+        price: 100.00
     },
     {
         id: 3,
         name: "Espresso",
-        image: require('../assets/images/Beverages/espresso.png')
+        image: require('../assets/images/Beverages/espresso.png'),
+        price: 90.00
     },
     {
         id: 4,
         name: "Latte",
-        image: require('../assets/images/Beverages/latte.png')
+        image: require('../assets/images/Beverages/latte.png'),
+        price: 110.00
     },
     {
         id: 5,
         name: "Machiato",
-        image: require('../assets/images/Beverages/machiato.png')
+        image: require('../assets/images/Beverages/machiato.png'),
+        price: 95.00
     },
     {
         id: 6,
         name: "Mocha",
-        image: require('../assets/images/Beverages/mocha.png')
+        image: require('../assets/images/Beverages/mocha.png'),
+        price: 95.00
     }
     
-]
+];
 
 const COLORS = {
     white: "#FFFFFF",

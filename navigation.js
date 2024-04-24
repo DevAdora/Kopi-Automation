@@ -10,7 +10,7 @@ export default function Navigation() {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName='Login'
+                initialRouteName='Home'
             >
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="Rastaurant" component={RestaurantScreen} />

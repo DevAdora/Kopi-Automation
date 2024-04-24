@@ -7,12 +7,15 @@ export default function Categories() {
         const [activeCategory, setActiveCategor] = useState(null);
 
   return (
-      <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
+      <View style={{ 
+        flexDirection: 'row', 
+        justifyContent: 'center'
+        }}>
             {
                 categories.map((category, index) => {
                     let isActive = category.id==activeCategory;
-                    let btnClass = isActive? ' bg-gray-600' : 'bg-gray-200';
-                    let textClass = isActive? 'font-semibold text-gray-800' : 'text-gray-500';
+                    let btnClass = isActive? 'bg-gray-600' : 'bg-gray-200';
+                    let textClass = isActive? `font-semibold text-gray-800` : 'text-gray-500';
                     return (
                         <View key={index} className="flex justify-center items-center mr-5">
                             <TouchableOpacity
