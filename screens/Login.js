@@ -5,9 +5,11 @@ import COLORS from '../constant';
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../components/Button';
+import { useNavigation } from '@react-navigation/native';
 
 const Login = ({ navigation }) => {
-    const [isPasswordShown, setIsPasswordShown] = useState(false);
+    const navigations = useNavigation();
+    const [isPasswordShown, setIsPasswordShown] = useState(true);
     const [isChecked, setIsChecked] = useState(false);
     
     return (
@@ -112,6 +114,7 @@ const Login = ({ navigation }) => {
                 </View>
 
                 <Button
+                    onPress={() => navigation.navigate('Home')}
                     title="Login"
                     filled
                     style={{

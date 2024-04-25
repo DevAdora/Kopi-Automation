@@ -1,7 +1,8 @@
-import { Text, FlatList, SafeAreaView, View, StyleSheet, Image, ScrollView } from 'react-native';
+import { Text, FlatList, TouchableOpacity, View, StyleSheet, Image, ScrollView } from 'react-native';
 import React from 'react';
 import { menus } from '../constant';
 import COLORS from '../constant';
+import * as Icon from 'react-native-feather';
 
 export default function Menu() {
 
@@ -12,6 +13,21 @@ export default function Menu() {
                     </View>
                     <Text style={styles.name}>{ item.name }</Text>
                     <Text style={styles.price}>₱{item.price.toFixed(2)}</Text>
+                    <View className="flex flex-col items-center">
+                        <TouchableOpacity
+                            className="p-1 rounded-full"
+                            style={{backgroundColor: COLORS.primary}}>
+                            <Icon.Plus strokeWidth={2} height={20} width={20} stroke={'white'} />
+                        </TouchableOpacity>
+                        <Text className="px-3">
+                            {2}
+                        </Text>
+                        <TouchableOpacity
+                            className="p-1 rounded-full"
+                            style={{backgroundColor: COLORS.primary}}>
+                            <Icon.Minus strokeWidth={2} height={20} width={20} stroke={'white'} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
     }
 
@@ -41,7 +57,6 @@ const styles = StyleSheet.create ({
     item: {
         justifyContent: 'space-between',
         padding: 25,
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 13

@@ -4,12 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import Categories from '../components/categories';
 import Menu from '../components/menu';
+import Cart from '../components/cart';
 
 export default function HomeScreen() {
   return (
     <SafeAreaView className='bg-white' style={{flex: 1}}>
-        <StatusBar/>
-        
+        <Cart />
         {/* main */}
         <Categories />
         {/* <ScrollView showsVerticalScrollIndicator={false} 
@@ -25,7 +25,7 @@ export default function HomeScreen() {
         fontWeight: 'bold',
         textAlign:'center'
         }} >Beverages</Text>
-
+        
         <Menu />
     </SafeAreaView>
   );
