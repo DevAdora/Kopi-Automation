@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  StyleSheet,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,6 +16,7 @@ import Checkbox from "expo-checkbox";
 import Button from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Login() {
   const navigation = useNavigation();
@@ -24,7 +26,7 @@ function Login() {
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState(null);
 
-  function loginSubmit({ props }) {
+  function loginSubmit() {
     console.log(username, password);
 
     const userData = {
@@ -33,45 +35,31 @@ function Login() {
     };
 
     axios
-      .post("http://192.168.101.16:5000/login-user", userData)
+      .post("/login-user", userData)
       .then((res) => {
         console.log(res.data);
         if (res.data.status === "ok") {
-          Alert.alert("Logged in");
-          navigation.navigate("Home");
+          AsyncStorage.setItem("token", res.data.data);
+          AsyncStorage.setItem("isLoggedIn", JSON.stringify(true));
+          AsyncStorage.setItem("userType", res.data.userType);
+          // Reset input fields and error message
+          setUsername("");
+          setPassword("");
+          setError("");
+          if (res.data.userType === "admin") {
+            navigation.navigate("Admin");
+          } else if (res.data.userType === "user") {
+            navigation.navigate("Home");
+          }
         } else {
-          setError("Login Failed");
+          setError("Invalid Credentials");
         }
       })
       .catch((error) => {
-        console.error("Axios Error:", error);
-        setError("Network error occurred");
+        setError("Invalid Credentials");
       });
   }
-  // const handleLogin = async () => {
 
-  //   console.log(username, password);
-
-  //   try {
-  //     const response = await fetch("http://localhost:5000/api/login", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         username: username,
-  //         password: password,
-  //       }),
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error("Invalid credentials");
-  //     }
-  //     // Navigate to home screen if login is successful
-  //     navigation.navigate("Home");
-  //   } catch (error) {
-  //     setError(error.message);
-  //   }
-  // };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary2 }}>
       <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -86,9 +74,11 @@ function Login() {
               justifyContent: "center",
             }}
           >
-            Hi! Welcome Back! 👋
+            Kopi Automation ☕
           </Text>
         </View>
+        {error && <Text style={styles.errorText}>{error}</Text>}
+        {""}
 
         <View style={{ marginBottom: 12 }}>
           <Text
@@ -223,5 +213,14 @@ function Login() {
     </SafeAreaView>
   );
 }
-
+const styles = StyleSheet.create({
+  errorText: {
+    color: "white",
+    marginBottom: 10,
+    textAlign: "center",
+    backgroundColor: "red",
+    padding: 20,
+    marginHorizontal: 50,
+  },
+});
 export default Login;

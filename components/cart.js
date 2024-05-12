@@ -1,28 +1,34 @@
-import { ScrollView, Text, TouchableOpacity, View, Image } from 'react-native';
 import React from 'react';
-import COLORS from '../constant';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import COLORS from '../constant';
+import { useCart } from './CartContext'; // Import useCart hook
 
 export default function Cart() {
     const navigation = useNavigation();
-  return (
-    <View className="absolute bottom-5 w-full z-50">
-        <TouchableOpacity
-            onPress={() => navigation.navigate('Order')}
-            style={{backgroundColor: COLORS.primary}}
-            className="flex-row justify-between items-center mx-5 rounded-full p-4 py-3 shadow-lg">
-                <View className="p-2 px-4 rounded-full" style={{backgroundColor: 'rgba(255,255,2550.3)'}}>
-                    <Text className="font-extrabold text-white text-lg">
-                        3
+    const { cartItems } = useCart(); // Access cartItems from CartContext
+
+    const totalQuantity = cartItems.reduce((acc, { quantity }) => acc + quantity, 0);
+    const totalPrice = cartItems.reduce((acc, { product, quantity }) => acc + product.price * quantity, 0);
+    // const totalProduct = cartItems.
+
+    return (
+        <View style={{ position: 'absolute', bottom: 20, width: '100%', zIndex: 1}}>
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Order')}
+                style={{ backgroundColor: COLORS.primary, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 20, padding: 15, borderRadius: 50, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}>
+                <View style={{ paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.3)' }}>
+                    <Text style={{ fontSize: 18, color: 'white' }}>
+                        {totalQuantity}
                     </Text>
                 </View>
-                <Text className="flex-1 text-center font-extrabold text-white text-lg">
+                <Text style={{ flex: 1, textAlign: 'center', fontSize: 18, color: 'white' }}>
                     View Order
                 </Text>
-                <Text className="font-extrabold text-white text-lg">
-                    ₱{110.00.toFixed(2)}
+                <Text style={{ fontSize: 18, color: 'white' }}>
+                    ₱{totalPrice.toFixed(2)}
                 </Text>
-        </TouchableOpacity>
-    </View>
-  );
+            </TouchableOpacity>
+        </View>
+    );
 }
