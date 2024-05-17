@@ -1,54 +1,301 @@
-import { ScrollView, Text, TouchableOpacity, View, Image } from 'react-native';
-import React from 'react';
-import COLORS, { menus } from '../constant';
-import * as Icon from 'react-native-feather';
+import React, { useState } from "react";
+import COLORS from "../constant";
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Image,
+  Modal,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useCart } from "../components/CartContext";
+import axios from "axios";
+import * as Icon from "react-native-feather";
+import placeholderImage from "../assets/images/Beverages/americano.png";
+import checkImage from "../assets/images/check.png";
 
 export default function CartScreen() {
+  const {
+    cartItems,
+    addToCart,
+    removeFromCart,
+    reduceQuantity,
+    increaseQuantity,
+  } = useCart();
+  const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const totalPrice = cartItems.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0
+  );
+
+  const placeOrder = async () => {
+    try {
+      setIsLoading(true);
+
+      const productNames = cartItems.map((item) => item.product.prodname);
+      const quantities = cartItems.map((item) => item.quantity);
+
+      const totalAmount = cartItems.reduce(
+        (acc, item) => acc + item.product.price * item.quantity,
+        0
+      );
+      const orderDetails = {
+        productNames: productNames,
+        quantities: quantities,
+        totalAmount: totalAmount,
+      };
+
+      const response = await fetch("http://192.168.101.16:5000/placeorder", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderDetails),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to place order");
+      }
+
+      console.log("Order placed successfully:", response.data);
+
+      setShowConfirmation(true);
+    } catch (error) {
+      console.error("Error placing order:", error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleReduceQuantity = (productId) => {
+    reduceQuantity(productId);
+  };
+
+  const handleIncreaseQuantity = (productId) => {
+    increaseQuantity(productId);
+  };
+
+  const handleRemoveFromCart = (productId) => {
+    removeFromCart(productId);
+  };
+
+  const handleCloseConfirmation = () => {
+    setShowConfirmation(false);
+    navigation.navigate("Home");
+  };
   return (
-    <View className='bg-white flex-1'>
-      <ScrollView
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: 50
-        }}
-        className="bg-white pt-5">
-          {
-            menus.map((menu, index) => {
-              return (
-                <View key={index}
-                className="flex-row items-center space-x-3 py-2 px-4 bg-white rounded-3xl mx-2 mb-3 shadow-lg">
-                  <Text className="font-bold" style={{color: COLORS.primary}}>
-                    2 x
-                  </Text>
-                  <Image className="h-14 w-14 rounded-full" source={menu.image} />
-                  <Text className="flex-1 font-bold text-gray-700">{menu.name}</Text>
-                  <Text className="font-semibold text-base">₱{menu.price}</Text>
-                  <TouchableOpacity
-                    className="p-1 rounded-full"
-                    style={{backgroundColor: COLORS.primary}}>
-                      <Icon.Minus strokeWidth={2} height={20} width={20} stroke="white" />
-                    </TouchableOpacity>
-                </View>
-              )
-            })
-          }
-        </ScrollView>
-        <View style={{backgroundColor: COLORS.primary}} className="p-6 px-8 rounded-t-3xl space-y-4 text-white">
-          <View className="flex-row justify-between">
-            <Text className="font-extrabold text-white text-lg">Total</Text>
-            <Text className="font-extrabold text-white text-lg">₱550.00</Text>
-          </View>
-          <View>
-            <TouchableOpacity 
-              style={{backgroundColor: COLORS.primary2}}
-              className="p-3 rounded-full"
+    <View style={{ flex: 1, backgroundColor: "white", paddingTop: 20 }}>
+      <FlatList
+        data={cartItems}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              padding: 10,
+              justifyContent: "space-around",
+            }}
+          >
+            <View style={styles.avatarContainer}>
+              <Image
+                source={item.image ? { uri: item.image } : placeholderImage}
+                style={styles.avatar}
+              />
+            </View>
+            <Text style={styles.name}>{item.product.prodname}</Text>
+            <Text style={styles.quantity}>Quantity: {item.quantity}</Text>
+            <Text style={styles.price}>
+              ₱{(item.product.price * item.quantity).toFixed(2)}
+            </Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => reduceQuantity(item.product)}
             >
-              <Text className="font-bold text-center text-black text-lg">
-                Place Order
-              </Text>
+              <Icon.Minus
+                strokeWidth={2}
+                height={20}
+                width={20}
+                stroke="white"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => increaseQuantity(item.product)}
+            >
+              <Icon.Plus
+                strokeWidth={2}
+                height={20}
+                width={20}
+                stroke="white"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => removeFromCart(item.product)}
+            >
+              <Icon.Trash
+                strokeWidth={2}
+                height={20}
+                width={20}
+                stroke="white"
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+      <View
+        style={{
+          backgroundColor: COLORS.primary,
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+        }}
+      >
+        <View style={styles.totalSection}>
+          <Text style={styles.totalText}>Total</Text>
+          <Text style={styles.totalText}>₱{totalPrice.toFixed(2)}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.placeOrderButton}
+          onPress={placeOrder}
+          disabled={isLoading || cartItems.length === 0} // Disable button if cart is empty or if order is being placed
+        >
+          <Text style={styles.placeOrderButtonText}>
+            {isLoading ? "Placing Order..." : "Place Order"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showConfirmation}
+        onRequestClose={handleCloseConfirmation}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Image source={checkImage} style={styles.checkIcon} />
+            <Text style={styles.modalText}>Order Placed Successfully!</Text>
+            <Text style={styles.modalText}>Thank you for your order.</Text>
+            <TouchableOpacity style={styles.printButton}>
+              <Text style={styles.modalButtonText}>Print</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={handleCloseConfirmation}
+            >
+              <Text style={styles.modalButtonText}>OK</Text>
             </TouchableOpacity>
           </View>
         </View>
+      </Modal>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  avatarContainer: {
+    backgroundColor: "#ccc",
+    borderRadius: 100,
+    height: 70,
+    width: 70,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  avatar: {
+    height: 55,
+    width: 55,
+  },
+  name: {
+    width: 100,
+    fontWeight: "600",
+  },
+  quantity: {
+    fontSize: 16,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  price: {
+    fontWeight: "600",
+    fontSize: 16,
+    marginLeft: 13,
+  },
+  totalSection: {
+    backgroundColor: "#5E3023",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+  },
+  totalText: {
+    fontWeight: "bold",
+    fontSize: 18,
+    color: "#fff",
+  },
+  button: {
+    backgroundColor: "#5E3023",
+    borderRadius: 10,
+    padding: 8,
+    marginLeft: 10,
+  },
+  placeOrderButton: {
+    backgroundColor: "#F3E9DC",
+    borderRadius: 10,
+    paddingVertical: 12,
+    marginTop: 10,
+  },
+  placeOrderButtonText: {
+    color: "#5E3023",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 16,
+    padding: 5,
+  },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    elevation: 5,
+  },
+  checkIcon: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
+  },
+  modalText: {
+    fontSize: 18,
+    textAlign: "center",
+  },
+  modalButton: {
+    backgroundColor: "#007bff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  modalButtonText: {
+    color: "#fff",
+    fontSize: 16,
+  },
+  printButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  modalButtonText: {
+    color: "#007bff",
+    fontSize: 16,
+  },
+});
