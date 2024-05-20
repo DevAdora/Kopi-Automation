@@ -50,7 +50,7 @@ export default function CartScreen() {
         totalAmount: totalAmount,
       };
 
-      const response = await fetch("http://192.168.101.16:5000/placeorder", {
+      const response = await fetch("http://192.168.1.10:5000/placeorder", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

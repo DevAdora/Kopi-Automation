@@ -24,7 +24,7 @@ function AddProductScreen() {
   const [image, setImage] = useState("");
 
   const handleAddProduct = () => {
-    fetch("http://192.168.101.16:5000/addproducts", {
+    fetch("http://192.168.1.10:5000/addproducts", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
