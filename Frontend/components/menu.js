@@ -35,6 +35,7 @@ export default function Menu() {
   }
   const renderItem = ({ item }) => {
     return (
+      <SafeAreaView>
       <View style={styles.item}>
         <View style={styles.avatarContainer}>
         <Image source={item.image ? { uri: item.image } : placeholderImage} style={styles.avatar} />
@@ -42,18 +43,7 @@ export default function Menu() {
         <Text style={styles.name}>{item.prodname}</Text>
         <Text style={styles.price}>₱{item.price?.toFixed(2)}</Text>
         <View className="flex flex-col items-center">
-          <TouchableOpacity
-            className="p-1 rounded-full"
-            style={{ backgroundColor: COLORS.primary }}
-          >
-            <Icon.Plus
-              strokeWidth={2}
-              height={20}
-              width={20}
-              stroke={"white"}
-            />
-          </TouchableOpacity>
-          <Text className="px-3">{2}</Text>
+          
           <TouchableOpacity
             className="p-1 rounded-full"
             style={{ backgroundColor: COLORS.primary }}
@@ -65,10 +55,22 @@ export default function Menu() {
               stroke={"white"}
             />
           </TouchableOpacity>
-          
+          <Text className="px-3">{2}</Text>
+          <TouchableOpacity
+            className="p-1 rounded-full"
+            style={{ backgroundColor: COLORS.primary }}
+          >
+            <Icon.Plus
+              strokeWidth={2}
+              height={20}
+              width={20}
+              stroke={"white"}
+            />
+          </TouchableOpacity>
         </View>
         
       </View>
+      </SafeAreaView>
     );
   };
   const itemSeparator = () => {

@@ -12,6 +12,7 @@ import placeholderImage from "../assets/images/Beverages/americano.png";
 import COLORS from "../constant";
 import { useCart } from "./CartContext";
 import * as Icon from "react-native-feather";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Menu = ({ item }) => {
   const [beveragesProducts, setBeveragesProducts] = useState([]);
@@ -72,19 +73,20 @@ const Menu = ({ item }) => {
           />
         </View>
         <Text style={styles.name}>{item.prodname}</Text>
-        <Text style={styles.price}>₱{item.price?.toFixed(2)}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleIncrement(index)}
-        >
-          <Icon.Plus strokeWidth={2} height={20} width={20} stroke={"white"} />
-        </TouchableOpacity>
-        <Text style={styles.quantity}>{item.quantity}</Text>
+        <Text style={styles.price}>₱{item.price}</Text>
+        
         <TouchableOpacity
           style={styles.button}
           onPress={() => handleDecrement(index)}
         >
           <Icon.Minus strokeWidth={2} height={20} width={20} stroke={"white"} />
+        </TouchableOpacity>
+        <Text style={styles.quantity}>{item.quantity}</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleIncrement(index)}
+        >
+          <Icon.Plus strokeWidth={2} height={20} width={20} stroke={"white"} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
@@ -112,10 +114,12 @@ const Menu = ({ item }) => {
 const styles = StyleSheet.create({
   item: {
     justifyContent: "space-between",
-    padding: 25,
+    // padding: 25,
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 13,
+    marginHorizontal: 10,
+    flex: 1
   },
   avatarContainer: {
     backgroundColor: "#ccc",
@@ -143,22 +147,23 @@ const styles = StyleSheet.create({
   price: {
     fontWeight: "600",
     fontSize: 16,
-    marginLeft: 13,
+    // marginLeft: 13,
     width: 50,
   },
   button: {
     backgroundColor: "#5E3023",
     borderRadius: 10,
     padding: 8,
-    marginLeft: 10,
+    // marginLeft: 10,
   },
   quantity: {
     fontSize: 16,
-    marginLeft: 10,
-    marginRight: 10,
+    // marginLeft: 10,
+    // marginRight: 10,
   },
   add: {
-    fontSize: 16,
+    fontSize: 12,
+    padding: 2,
     color: "#fdfdfd",
   },
 });

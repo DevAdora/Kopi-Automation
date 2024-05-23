@@ -5,7 +5,7 @@ import axios from "axios";
 import React from 'react';
 import { CartProvider } from "./components/CartContext"; // Import CartProvider
 
-axios.defaults.baseURL = "http://192.168.101.16:5000";
+axios.defaults.baseURL = "http://192.168.1.8:5000";
 
 export default function App() {
   return (

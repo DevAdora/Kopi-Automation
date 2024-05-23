@@ -50,7 +50,7 @@ export default function CartScreen() {
         totalAmount: totalAmount,
       };
 
-      const response = await fetch("http://192.168.101.16:5000/placeorder", {
+      const response = await fetch("http://192.168.1.8:5000/placeorder", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,10 +96,13 @@ export default function CartScreen() {
         renderItem={({ item }) => (
           <View
             style={{
+              justifyContent: "space-between",
+              // padding: 25,
               flexDirection: "row",
               alignItems: "center",
-              padding: 10,
-              justifyContent: "space-around",
+              paddingVertical: 13,
+              marginHorizontal: 10,
+              flex: 1
             }}
           >
             <View style={styles.avatarContainer}>
@@ -109,9 +112,9 @@ export default function CartScreen() {
               />
             </View>
             <Text style={styles.name}>{item.product.prodname}</Text>
-            <Text style={styles.quantity}>Quantity: {item.quantity}</Text>
+            <Text style={styles.quantity}>{item.quantity}</Text>
             <Text style={styles.price}>
-              ₱{(item.product.price * item.quantity).toFixed(2)}
+              ₱{(item.product.price * item.quantity)}
             </Text>
             <TouchableOpacity
               style={styles.button}
@@ -211,18 +214,21 @@ const styles = StyleSheet.create({
     width: 55,
   },
   name: {
-    width: 100,
     fontWeight: "600",
-  },
-  quantity: {
     fontSize: 16,
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 13,
+    width: 100,
+  },
+  separator: {
+    height: 1,
+    width: "100%",
+    backgroundColor: "#ccc",
   },
   price: {
     fontWeight: "600",
     fontSize: 16,
     marginLeft: 13,
+    width: 50,
   },
   totalSection: {
     backgroundColor: "#5E3023",

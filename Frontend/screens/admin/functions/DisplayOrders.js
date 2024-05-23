@@ -9,7 +9,7 @@ const OrdersScreen = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.101.16:5000/getorders"
+          "http://192.168.1.8:5000/getorders"
         );
         setOrders(response.data);
       } catch (error) {

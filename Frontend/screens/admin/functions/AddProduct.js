@@ -24,7 +24,7 @@ function AddProductScreen() {
   const [image, setImage] = useState("");
 
   const handleAddProduct = () => {
-    fetch("http://192.168.101.16:5000/addproducts", {
+    fetch("http://192.168.1.8:5000/addproducts", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -91,7 +91,9 @@ function AddProductScreen() {
           <Picker.Item label="Beverages" value="Beverages" />
           <Picker.Item label="Snacks" value="Snacks" />
         </Picker>
-        <Button title="Pick an image" onPress={pickImage} />
+        <TouchableOpacity style={styles.addButton} onPress={pickImage}>
+          <Text style={styles.addButtonText}>Pick an image</Text>
+        </TouchableOpacity>
         {image && (
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
         )}
@@ -104,10 +106,14 @@ function AddProductScreen() {
 }
 
 const styles = StyleSheet.create({
+  pick: {
+    backgroundColor: '#5E3023'
+  },
+
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#F3E9DC",
   },
   input: {
     height: 50,
@@ -133,10 +139,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   addButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#5E3023",
     padding: 15,
     borderRadius: 5,
     alignItems: "center",
+    marginVertical: 10
   },
   addButtonText: {
     color: "#fff",

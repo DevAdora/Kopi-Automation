@@ -179,7 +179,7 @@ function Login() {
             color={isChecked ? COLORS.primary : undefined}
           />
 
-          <Text>Remenber Me</Text>
+          <Text>Remember Me</Text>
         </View>
 
         <Button
@@ -203,7 +203,6 @@ function Login() {
             style={{
               height: 350,
               width: 350,
-              marginTop: 35,
               opacity: 0.6,
             }}
             resizeMode="contain"

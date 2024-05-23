@@ -69,7 +69,7 @@ const ProductListScreen = () => {
   const saveChanges = async () => {
     try {
       await axios.put(
-        `http://192.168.101.16:5000/editproduct/${selectedProduct._id}`,
+        `http://192.168.1.8:5000/editproduct/${selectedProduct._id}`,
         {
           prodname: editedProductName,
           price: editedProductPrice,

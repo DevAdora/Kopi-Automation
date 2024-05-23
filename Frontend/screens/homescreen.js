@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import Categories from "../components/categories";
-import { categories } from "../constant";
+import COLORS, { categories } from "../constant";
 import Menu from "../components/menu";
 import Cart from "../components/cart";
 import BeveragesMenu from "../components/BeveragesMenu";
@@ -62,7 +62,6 @@ export default function HomeScreen() {
   }
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Cart zIndex={sliderOpen ? -1 : 1} />
 
       <View style={styles.container}>
         {categories.map((category) => (
@@ -95,14 +94,16 @@ export default function HomeScreen() {
       )}
       {selectedCategory === "Meals" && <MealsMenu products={products} />}
       {selectedCategory === "Snacks" && <SnacksMenu products={products} />}
+      
+      <Cart zIndex={sliderOpen ? -1 : 1} />
       <TouchableOpacity onPress={toggleSlider} style={styles.toggleButton}>
         <FontAwesome5
           name="user"
           size={24}
-          color="#333"
+          color="#5E3023"
           style={styles.navIcon}
         />
-        <Text style={styles.toggleButtonText}>{userData.username}</Text>
+        <Text style={styles.toggleButtonText}>{capitalizeFirstLetter(userData.username)}</Text>
       </TouchableOpacity>
       <Animated.View
         style={[
@@ -114,6 +115,7 @@ export default function HomeScreen() {
           <Text style={styles.closeButtonText}>X</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.sliderNavItem}>
+          <FontAwesome5 name="list" size={30} color="#333" />
           <Text style={styles.sliderNavItemText}>Prodcts</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -136,13 +138,19 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
-
+function capitalizeFirstLetter(string) {
+  if (typeof string !== 'string' || string.length === 0) {
+    return string;
+  }
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    marginVertical: 75,
+    marginTop: 95,
+    marginBottom: 40,
   },
   categoryButton: {
     alignItems: "center",
@@ -173,7 +181,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   activeCategoryButton: {
-    backgroundColor: "gray",
+    backgroundColor: COLORS.primary,
     borderRadius: 15,
   },
   activeCategoryText: {
@@ -191,7 +199,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   toggleButtonText: {
-    color: "#333",
+    color: "#5E3023",
     paddingHorizontal: 5,
     fontSize: 24,
   },
@@ -204,7 +212,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fdfdfd",
     padding: 20,
     justifyContent: "flex-start",
-    alignItems: "flex",
+    alignItems: "center",
     display: "flex",
     zIndex: 2,
   },
@@ -213,11 +221,12 @@ const styles = StyleSheet.create({
     marginTop: 100,
     borderBottomWidth: 1,
     borderBottomColor: "#5E3023",
-    alignItems: "center",
+    flexDirection: 'row', alignItems: 'center',
   },
   sliderNavItemText: {
     color: "#333",
     fontSize: 24,
+    marginHorizontal: 10
   },
   closeButton: {
     position: "absolute",

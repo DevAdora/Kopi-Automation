@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, FlatList, Alert } from "react-native";
+import { Text, View, StyleSheet, FlatList, Alert, SafeAreaView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -92,6 +92,12 @@ function AdminScreen({ navigation }) {
   const salesData = [{ day: "Today", totalSales: 150 }];
 
   const totalSales = salesData.reduce((acc, curr) => acc + curr.totalSales, 0);
+  function capitalizeFirstLetter(string) {
+    if (typeof string !== 'string' || string.length === 0) {
+      return string;
+    }
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   return (
     <View style={styles.container}>
@@ -100,11 +106,11 @@ function AdminScreen({ navigation }) {
           <FontAwesome5
             name="user"
             size={24}
-            color="#333"
+            color="#000"
             onPress={() => navigation.navigate("Inventory")}
             style={styles.navIcon}
           />
-          <Text style={styles.userName}>{userData.username}</Text>
+          <Text style={styles.userName}>{capitalizeFirstLetter(userData.username)}</Text>
         </View>
       </View>
       <View>
@@ -170,7 +176,7 @@ function AdminScreen({ navigation }) {
           <FontAwesome5
             name="home"
             size={24}
-            color="#333"
+            color="#5E3023"
             onPress={() => navigation.navigate("Admin")}
             style={styles.navIcon}
           />
@@ -181,7 +187,7 @@ function AdminScreen({ navigation }) {
           <FontAwesome5
             name="user"
             size={24}
-            color="#333"
+            color="#5E3023"
             onPress={() => navigation.navigate("Profile")}
             style={styles.navIcon}
           />
@@ -192,7 +198,7 @@ function AdminScreen({ navigation }) {
           <FontAwesome5
             name="clipboard-list"
             size={24}
-            color="#333"
+            color="#5E3023"
             onPress={() => navigation.navigate("Inventory")}
             style={styles.navIcon}
           />
@@ -203,7 +209,7 @@ function AdminScreen({ navigation }) {
           <FontAwesome5
             name="sign-out-alt"
             size={24}
-            color="#333"
+            color="#5E3023"
             onPress={signOut}
             style={styles.navIcon}
           />
@@ -219,7 +225,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     flex: 1,
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#F3E9DC",
   },
   userInfo: {
     marginBottom: 20,
@@ -231,13 +237,6 @@ const styles = StyleSheet.create({
     borderBottomColor: "gray",
     borderBottomStyle: "solid",
     alignItems: "center",
-  },
-  userName: {
-    paddingTop: 10,
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#333333",
-    marginLeft: 10,
   },
   navIcon: {
     marginRight: 10,
@@ -266,7 +265,7 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#333333",
+    color: "#000",
     marginBottom: 5,
   },
   userType: {
@@ -294,8 +293,8 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#333333",
+    // fontWeight: "bold",
+    // color: "#5E3023",
     marginBottom: 5,
   },
   email: {
@@ -309,33 +308,33 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   salesContainer: {
-    borderColor: "#D0bb94",
+    borderColor: "#000",
     borderStyle: "solid",
-    borderWidth: 4,
+    borderWidth: 1,
     padding: 10,
-    borderRadius: 20,
+    // borderRadius: 20,
   },
   dayText: {
     fontSize: 30,
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
   timeText: {
     paddingBottom: 10,
   },
   salesText: {
     fontSize: 25,
-    paddingVertical: 10,
+    paddingVertical: 5,
     fontWeight: "400",
   },
   totalSalesText: {
     fontSize: 25,
-    paddingVertical: 10,
+    paddingVertical: 5,
     fontWeight: "400",
   },
   // BENTO //
   bentocontainer: {
-    flex: 1,
-    backgroundColor: "#fff",
+    // flex: 1,
+    // backgroundColor: "#fff",
     padding: 10,
     marginBottom: 10,
   },
@@ -343,7 +342,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#000",
     alignItems: "center",
     marginBottom: 10,
   },
@@ -368,7 +367,7 @@ const styles = StyleSheet.create({
   },
   categoryBox: {
     flex: 1,
-    padding: 20,
+    paddingVertical: 20,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -383,7 +382,7 @@ const styles = StyleSheet.create({
   // NAVBAR //
   navBar: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     paddingVertical: 10,
     borderTopWidth: 1,
     alignItems: "flex-end",

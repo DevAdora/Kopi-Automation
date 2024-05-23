@@ -13,7 +13,7 @@ export default function Cart() {
     // const totalProduct = cartItems.
 
     return (
-        <View style={{ position: 'absolute', bottom: 20, width: '100%', zIndex: 1}}>
+        <View style={{ marginVertical: 20}}>
             <TouchableOpacity
                 onPress={() => navigation.navigate('Order')}
                 style={{ backgroundColor: COLORS.primary, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 20, padding: 15, borderRadius: 50, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}>
