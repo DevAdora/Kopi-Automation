@@ -86,13 +86,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#5E3023",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   modalButtonText: {
-    color: "#fff",
+    color: "FFFFFF",
     fontSize: 16,
   },
 });
