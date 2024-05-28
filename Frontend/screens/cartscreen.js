@@ -16,6 +16,7 @@ import * as Icon from "react-native-feather";
 import placeholderImage from "../assets/images/Beverages/americano.png";
 import checkImage from "../assets/images/check.png";
 
+
 export default function CartScreen() {
   const {
     cartItems,
@@ -23,6 +24,7 @@ export default function CartScreen() {
     removeFromCart,
     reduceQuantity,
     increaseQuantity,
+    clearCart,
   } = useCart();
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +38,6 @@ export default function CartScreen() {
   const placeOrder = async () => {
     try {
       setIsLoading(true);
-
       const productNames = cartItems.map((item) => item.product.prodname);
       const quantities = cartItems.map((item) => item.quantity);
 
@@ -44,13 +45,14 @@ export default function CartScreen() {
         (acc, item) => acc + item.product.price * item.quantity,
         0
       );
+    
       const orderDetails = {
         productNames: productNames,
         quantities: quantities,
         totalAmount: totalAmount,
       };
 
-      const response = await fetch("http://192.168.1.8:5000/placeorder", {
+      const response = await fetch("http://192.168.101.16:5000/placeorder", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,6 +67,7 @@ export default function CartScreen() {
       console.log("Order placed successfully:", response.data);
 
       setShowConfirmation(true);
+      clearCart(); 
     } catch (error) {
       console.error("Error placing order:", error.message);
     } finally {
@@ -96,13 +99,10 @@ export default function CartScreen() {
         renderItem={({ item }) => (
           <View
             style={{
-              justifyContent: "space-between",
-              // padding: 25,
               flexDirection: "row",
               alignItems: "center",
-              paddingVertical: 13,
-              marginHorizontal: 10,
-              flex: 1
+              padding: 10,
+              justifyContent: "space-around",
             }}
           >
             <View style={styles.avatarContainer}>
@@ -112,9 +112,9 @@ export default function CartScreen() {
               />
             </View>
             <Text style={styles.name}>{item.product.prodname}</Text>
-            <Text style={styles.quantity}>{item.quantity}</Text>
+            <Text style={styles.quantity}>Quantity: {item.quantity}</Text>
             <Text style={styles.price}>
-              ₱{(item.product.price * item.quantity)}
+              ₱{(item.product.price * item.quantity).toFixed(2)}
             </Text>
             <TouchableOpacity
               style={styles.button}
@@ -214,21 +214,18 @@ const styles = StyleSheet.create({
     width: 55,
   },
   name: {
-    fontWeight: "600",
-    fontSize: 16,
-    marginLeft: 13,
     width: 100,
+    fontWeight: "600",
   },
-  separator: {
-    height: 1,
-    width: "100%",
-    backgroundColor: "#ccc",
+  quantity: {
+    fontSize: 16,
+    marginLeft: 10,
+    marginRight: 10,
   },
   price: {
     fontWeight: "600",
     fontSize: 16,
     marginLeft: 13,
-    width: 50,
   },
   totalSection: {
     backgroundColor: "#5E3023",

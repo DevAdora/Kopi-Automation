@@ -248,6 +248,7 @@ app.post("/placeorder", async (req, res) => {
     });
   }
 });
+
 app.get("/getorders", async (req, res) => {
   try {
     const orders = await Order.find({});
@@ -257,6 +258,19 @@ app.get("/getorders", async (req, res) => {
     res.status(500).json({ error: "Server Error" });
   }
 });
+
+
+app.get("/total-orders-amount", async (req, res) => {
+  try {
+    const orders = await Order.find();
+    const totalAmount = orders.reduce((sum, order) => sum + order.amount, 0);
+    res.status(200).json({ totalAmount });
+  } catch (error) {
+    console.error("Error fetching total order amount:", error);
+    res.status(500).json({ error: "Failed to fetch total order amount" });
+  }
+});
+
 
 // Start server
 const PORT = process.env.PORT || 5000;
