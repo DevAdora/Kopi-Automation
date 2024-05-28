@@ -18,7 +18,6 @@ export const CartProvider = ({ children }) => {
   };
 
   const reduceQuantity = (product) => {
-    // Reduce the quantity of the specified product
     const updatedCartItems = [...cartItems];
     const itemIndex = updatedCartItems.findIndex(
       (item) => item.product._id === product._id
@@ -28,8 +27,8 @@ export const CartProvider = ({ children }) => {
       setCartItems(updatedCartItems);
     }
   };
+
   const increaseQuantity = (product) => {
-    // Increase the quantity of the specified product
     const updatedCartItems = [...cartItems];
     const itemIndex = updatedCartItems.findIndex(
       (item) => item.product._id === product._id
@@ -40,6 +39,10 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -48,6 +51,7 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         reduceQuantity,
         increaseQuantity,
+        clearCart,
       }}
     >
       {children}

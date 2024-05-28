@@ -10,8 +10,34 @@ import { FontAwesome5 } from "@expo/vector-icons";
 function AdminScreen({ navigation }) {
   const [userData, setUserData] = useState("");
   const [allUserData, setAllUserData] = useState("");
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const total = 15000;
+  useEffect(() => {
+    const fetchTotalAmount = async () => {
+      try {
+        const response = await fetch(
+          "http://192.168.101.16:5000/total-orders-amount"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch total order amount");
+        }
+        const data = await response.json();
+        setTotalAmount(data.totalAmount);
+      } catch (error) {
+        console.error("Error fetching total order amount:", error.message);
+        Alert.alert(
+          "Error",
+          "Failed to fetch total order amount. Please try again."
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTotalAmount();
+  }, []);
+
   const categorySales = [
     { category: "Meals", sales: 5000 },
     { category: "Beverages", sales: 4000 },
@@ -139,7 +165,7 @@ function AdminScreen({ navigation }) {
       <View style={styles.bentocontainer}>
         <View style={styles.totalSalesBox}>
           <Text style={styles.boxTitle}>TOTAL SALES</Text>
-          <Text style={styles.totalText}>₱{total}</Text>
+          <Text style={styles.totalText}>₱{totalAmount.toFixed(2)}</Text>
         </View>
         <View style={styles.categoriesContainer}>
           <View style={styles.categoriesRow}>
@@ -175,17 +201,6 @@ function AdminScreen({ navigation }) {
             style={styles.navIcon}
           />
           <Text style={styles.navText}>Home</Text>
-        </View>
-
-        <View style={styles.navItem}>
-          <FontAwesome5
-            name="user"
-            size={24}
-            color="#333"
-            onPress={() => navigation.navigate("Profile")}
-            style={styles.navIcon}
-          />
-          <Text style={styles.navText}>Profile</Text>
         </View>
 
         <View style={styles.navItem}>

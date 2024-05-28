@@ -16,6 +16,7 @@ import * as Icon from "react-native-feather";
 import placeholderImage from "../assets/images/Beverages/americano.png";
 import checkImage from "../assets/images/check.png";
 
+
 export default function CartScreen() {
   const {
     cartItems,
@@ -23,6 +24,7 @@ export default function CartScreen() {
     removeFromCart,
     reduceQuantity,
     increaseQuantity,
+    clearCart,
   } = useCart();
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +38,6 @@ export default function CartScreen() {
   const placeOrder = async () => {
     try {
       setIsLoading(true);
-
       const productNames = cartItems.map((item) => item.product.prodname);
       const quantities = cartItems.map((item) => item.quantity);
 
@@ -44,6 +45,7 @@ export default function CartScreen() {
         (acc, item) => acc + item.product.price * item.quantity,
         0
       );
+    
       const orderDetails = {
         productNames: productNames,
         quantities: quantities,
@@ -65,6 +67,7 @@ export default function CartScreen() {
       console.log("Order placed successfully:", response.data);
 
       setShowConfirmation(true);
+      clearCart(); 
     } catch (error) {
       console.error("Error placing order:", error.message);
     } finally {

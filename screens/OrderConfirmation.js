@@ -16,8 +16,7 @@ const OrderConfirmationScreen = ({ navigation }) => {
   }, [modalVisible, navigation]);
 
   const handlePlaceOrder = () => {
-    // Perform actions related to placing the order
-    // For now, let's just show the modal
+
     setModalVisible(true);
   };
 
@@ -86,13 +85,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#5E3023",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   modalButtonText: {
-    color: "#fff",
+    color: "#ccc",
     fontSize: 16,
   },
 });
