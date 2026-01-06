@@ -11,16 +11,7 @@ const multer = require("multer");
 app.use(cors());
 
 // MongoDB connection
-const mongoUrl =
-  "mongodb+srv://2rreiyhes:8ZMnihKsIShl5F39@cluster0.4ct5meb.mongodb.net/Kopi";
-const JWT_SECRET =
-  "hvdvay6ert72839289()aiyg8t87qt72393293883uhefiuh78ttq3ifi78272jdsds039[]]pou89ywe";
-mongoose
-  .connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("Database Connected"))
-  .catch((err) => console.error("Database Connection Error:", err));
 
-// User model
 require("./UserDetails");
 const User = mongoose.model("users");
 
